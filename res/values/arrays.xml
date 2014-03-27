@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="category_names">
+        <item>トップ</item>
+        <item>エンタメ</item>
+        <item>スポーツ</item>
+        <item>グルメ</item>
+        <item>コラム</item>
+        <item>国内</item>
+        <item>政治</item>
+        <item>経済</item>
+        <item>テクノロジー</item>
+        <item>国際</item>
+        <item>Twitter</item>
+        <item>プラス</item>
+    </string-array>
+    <array name="category_colors">
+        <item>#fd0006</item>
+        <item>#009b95</item>
+        <item>#00ffff</item>
+        <item>#a2ef00</item>
+        <item>#ff7100</item>
+        <item>#cb0077</item>
+    </array>
+
+</resources>
