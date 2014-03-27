@@ -65,9 +65,9 @@ public class TabsFragment extends Fragment
         for (int i = 0; i < adapter.getCount(); i++) {
             addTab(adapter.getTab(i));
         }
-        
+
         viewPager.getAdapter().notifyDataSetChanged();
-        
+
         this.viewPager = viewPager;
     }
 
@@ -85,12 +85,12 @@ public class TabsFragment extends Fragment
         if (viewPager == null) {
             return;
         }
-        
-        TabPagerAdapter adapter = (TabPagerAdapter)viewPager.getAdapter();
-        
+
+        TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
+
         LinearLayout tabContainer = (LinearLayout) getActivity()
                 .findViewById(R.id.fragment_tab_container);
-        
+
         for (int i = 0; i < adapter.getCount(); i++) {
             adapter.destroyItem(tabContainer, i, this);
         }
@@ -118,7 +118,7 @@ public class TabsFragment extends Fragment
 
         if (newScrollX != lastScrollX) {
             lastScrollX = newScrollX;
-            HorizontalScrollView tabScrollView = (HorizontalScrollView)getActivity()
+            HorizontalScrollView tabScrollView = (HorizontalScrollView) getActivity()
                     .findViewById(R.id.tab_scroll_view);
 
             tabScrollView.scrollTo(newScrollX, 0);

@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -33,6 +32,12 @@ public class TabFragment extends Fragment
 
         return tabFragment;
     }
+    
+    public static void setBackGroundColorForTextView(TextView textView, int color) {
+        LayerDrawable layerDrawable = (LayerDrawable) textView.getBackground();
+        GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable.getDrawable(1);
+        gradientDrawable.setColor(color);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,11 +48,7 @@ public class TabFragment extends Fragment
         Bundle arguments = getArguments();
         textView.setText(arguments.getString(TITLE));
 
-        // Set background colors.
-        StateListDrawable backgroundTab = (StateListDrawable) textView.getBackground();
-        LayerDrawable layerDrawable = (LayerDrawable) backgroundTab.getCurrent();
-        GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable.getDrawable(1);
-        gradientDrawable.setColor(arguments.getInt(COLOR));
+        setBackGroundColorForTextView(textView, arguments.getInt(COLOR));
 
         textView.setOnClickListener(this);
 
@@ -62,5 +63,7 @@ public class TabFragment extends Fragment
         int position = Arrays.asList(categoryNames).indexOf(getArguments().getString(TITLE));
         viewPager.setCurrentItem(position);
         
+        view.setBackgroundResource(R.drawable.background_tab_shape_focused);
+        setBackGroundColorForTextView((TextView)view, getArguments().getInt(COLOR));
     }
 }
