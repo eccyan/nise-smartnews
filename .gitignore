@@ -9,10 +9,10 @@
 *.class
 
 # generated files
-bin/
-gen/
+bin/*
+gen/*
 lint.xml
-proguard/
+proguard/*
 
 # Robolectric generated files
 tmp/
