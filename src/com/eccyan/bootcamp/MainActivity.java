@@ -6,16 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity {  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+   
         FragmentManager fragmentManager = getSupportFragmentManager();
         TabsFragment tabs = (TabsFragment) fragmentManager.findFragmentById(R.id.tabs);
 
@@ -25,12 +24,8 @@ public class MainActivity extends FragmentActivity {
 
         pager.setAdapter(adapter);
 
-        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
-                getResources().getDisplayMetrics());
-        pager.setPageMargin(pageMargin);
-
         tabs.setViewPager(pager);
-    }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

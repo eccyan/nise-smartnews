@@ -65,7 +65,9 @@ public class TabsFragment extends Fragment
         for (int i = 0; i < adapter.getCount(); i++) {
             addTab(adapter.getTab(i));
         }
-
+        
+        viewPager.getAdapter().notifyDataSetChanged();
+        
         this.viewPager = viewPager;
     }
 
@@ -80,13 +82,17 @@ public class TabsFragment extends Fragment
     }
 
     public void removeAllTabs() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        Fragment fragment = null;
-        while ((fragment = fragmentManager.findFragmentByTag(TAG_TAB)) != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(fragment);
-            fragmentTransaction.commit();
+        if (viewPager == null) {
+            return;
+        }
+        
+        TabPagerAdapter adapter = (TabPagerAdapter)viewPager.getAdapter();
+        
+        LinearLayout tabContainer = (LinearLayout) getActivity()
+                .findViewById(R.id.fragment_tab_container);
+        
+        for (int i = 0; i < adapter.getCount(); i++) {
+            adapter.destroyItem(tabContainer, i, this);
         }
     }
 
