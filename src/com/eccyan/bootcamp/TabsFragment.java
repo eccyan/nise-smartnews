@@ -21,7 +21,6 @@ public class TabsFragment extends Fragment
         implements OnPageChangeListener {
     final private static String CURRENT_POSITION = "current position";
     final private static String TAGNAME_TAB = "tab";
-    final private static int SCROLL_OFFSET = 52;
 
     public static String tagNameWithID(int id) {
         return String.format(Locale.JAPAN, "%d_%s", id, TAGNAME_TAB);
@@ -35,7 +34,7 @@ public class TabsFragment extends Fragment
     private int lastScrollX;
     
     private View sectionLineView;
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -43,7 +42,7 @@ public class TabsFragment extends Fragment
             currentPosition = savedInstanceState.getInt(CURRENT_POSITION, 0);
         }
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +64,14 @@ public class TabsFragment extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_POSITION, currentPosition);
+    }
+
+    public int getMinimumUnscrallablePosition() {
+        return Math.max(currentPosition - 1, 0);
+    }
+
+    public int getMaximumUnscrallablePosition() {
+        return Math.min(currentPosition + 1, viewPager.getAdapter().getCount() - 1);
     }
 
     public ViewPager getViewPager() {
@@ -139,9 +146,12 @@ public class TabsFragment extends Fragment
     }
 
     public int getScrollOffset() {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SCROLL_OFFSET,
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        
+        int tabWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80,
                 displayMetrics);
+        return (displayMetrics.widthPixels - tabWidth) / 2;
     }
 
     private void scrollTo(int position, int offset) {

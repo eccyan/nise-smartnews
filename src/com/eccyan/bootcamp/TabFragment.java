@@ -1,6 +1,7 @@
 
 package com.eccyan.bootcamp;
 
+import android.R.integer;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -112,7 +113,7 @@ public class TabFragment extends Fragment
         setBackGroundColorForTextView(tabView, tab.getColor());
     }
     
-    public void setViewPagerItemToTabPosition() {
+    public void setViewPagerItemPosition(int position) {
         ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.pager);
         
         viewPager.setCurrentItem(position);
@@ -126,10 +127,10 @@ public class TabFragment extends Fragment
             setBackgroundColorToPressed();
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            setViewPagerItemToTabPosition();
+            setViewPagerItemPosition(position);
         }
         
-        return true;
+        return false;
     }
     
 }
