@@ -172,8 +172,14 @@ public class TabsFragment extends Fragment
             lastScrollX = newScrollX;
             HorizontalScrollView tabScrollView = (HorizontalScrollView) getActivity()
                     .findViewById(R.id.tab_scroll_view);
-
-            tabScrollView.scrollTo(newScrollX, 0);
+            
+            int direction = 1;
+            if (currentPosition - position < 0) {
+                direction = -1;
+            }
+            
+            tabScrollView.smoothScrollBy(1 * direction, 0);
+            tabScrollView.smoothScrollTo(newScrollX, 0);
         }
 
     }

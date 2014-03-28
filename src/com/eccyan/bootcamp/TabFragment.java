@@ -1,7 +1,6 @@
 
 package com.eccyan.bootcamp;
 
-import android.R.integer;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -116,7 +115,7 @@ public class TabFragment extends Fragment
     public void setViewPagerItemPosition(int position) {
         ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.pager);
         
-        viewPager.setCurrentItem(position);
+        viewPager.setCurrentItem(position, true);
     }
 
     @Override
