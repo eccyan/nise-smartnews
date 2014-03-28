@@ -3,6 +3,8 @@ package com.eccyan.bootcamp;
 
 import java.util.Locale;
 
+import com.nineoldandroids.animation.ObjectAnimator;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,7 +34,8 @@ public class TabsFragment extends Fragment
     private ViewPager viewPager;
     private int currentPosition;
     private int lastScrollX;
-    
+
+    private HorizontalScrollView tabScrollView;
     private View sectionLineView;
 
     @Override
@@ -46,7 +49,7 @@ public class TabsFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         sectionLineView = null;
     }
 
@@ -55,6 +58,8 @@ public class TabsFragment extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
         
+        tabScrollView = (HorizontalScrollView)view.findViewById(R.id.tab_scroll_view);
+
         sectionLineView = view.findViewById(R.id.tabs_section_line);
 
         return view;
@@ -148,7 +153,7 @@ public class TabsFragment extends Fragment
     public int getScrollOffset() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        
+
         int tabWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80,
                 displayMetrics);
         return (displayMetrics.widthPixels - tabWidth) / 2;
@@ -163,7 +168,8 @@ public class TabsFragment extends Fragment
 
         LinearLayout tabContainer = (LinearLayout) getActivity()
                 .findViewById(R.id.fragment_tab_container);
-        int newScrollX = tabContainer.getChildAt(position).getLeft() + offset;
+        View targetTab = tabContainer.getChildAt(position);
+        int newScrollX = targetTab.getLeft() + offset;
         if (position > 0 || offset > 0) {
             newScrollX -= getScrollOffset();
         }
@@ -172,14 +178,18 @@ public class TabsFragment extends Fragment
             lastScrollX = newScrollX;
             HorizontalScrollView tabScrollView = (HorizontalScrollView) getActivity()
                     .findViewById(R.id.tab_scroll_view);
-            
+
             int direction = 1;
             if (currentPosition - position < 0) {
                 direction = -1;
             }
             
-            tabScrollView.smoothScrollBy(1 * direction, 0);
+            tabScrollView.smoothScrollBy(direction, 0);
             tabScrollView.smoothScrollTo(newScrollX, 0);
+            
+            ObjectAnimator.ofFloat(targetTab, "scaleY", 1, 40 / 36)
+                    .setDuration(200).start();
+
         }
 
     }
