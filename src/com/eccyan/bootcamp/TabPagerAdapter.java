@@ -42,7 +42,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
         super.destroyItem(container, position, object);
     }
     
-    public Tab getTab(int position) {
+    public Tab getTabAt(int position) {
         return tabs[position];   
     }
 }

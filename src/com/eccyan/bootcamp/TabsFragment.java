@@ -3,7 +3,6 @@ package com.eccyan.bootcamp;
 
 import java.util.Locale;
 
-import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,7 +38,7 @@ public class TabsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
-        
+
         return view;
     }
 
@@ -69,18 +68,18 @@ public class TabsFragment extends Fragment
         viewPager.setOnPageChangeListener(this);
         viewPager.setPageTransformer(true, new TabPageTransformer());
 
-
-        removeAllTabs();
         TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
-            addTab(i, adapter.getTab(i));
+            addTab(i, adapter.getTabAt(i));
         }
 
-        viewPager.getAdapter().notifyDataSetChanged();
+        setSectionLineColor(adapter.getTabAt(currentPosition).getColor());
 
         this.viewPager = viewPager;
-        
-        setSectionLineColor(adapter.getTab(currentPosition).getColor());
+
+        removeAllTabs();
+        this.viewPager.getAdapter().notifyDataSetChanged();
+
     }
 
     public void addTab(int position, Tab tab) {
@@ -88,9 +87,26 @@ public class TabsFragment extends Fragment
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_tab_container,
-                TabFragment.newInstance(position, tab.getTitle(), tab.getColor()), tagNameWithID(position));
+                TabFragment.newInstance(position, tab.getTitle(), tab.getColor()),
+                tagNameWithID(position));
 
         fragmentTransaction.commit();
+    }
+
+    private void removeTabFragmentAt(int position) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(getTabFragmentAt(position));
+
+        fragmentTransaction.commit();
+    }
+
+    private TabFragment getTabFragmentAt(int position) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        return (TabFragment) fragmentManager
+                .findFragmentByTag(tagNameWithID(position));
     }
 
     public void removeAllTabs() {
@@ -105,6 +121,9 @@ public class TabsFragment extends Fragment
 
         for (int i = 0; i < adapter.getCount(); i++) {
             adapter.destroyItem(tabContainer, i, this);
+            if (getTabFragmentAt(i) != null) {
+                removeTabFragmentAt(i);
+            }
         }
     }
 
@@ -113,7 +132,7 @@ public class TabsFragment extends Fragment
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SCROLL_OFFSET,
                 displayMetrics);
     }
-    
+
     private void setSectionLineColor(int color) {
         View sectionLine = getView().findViewById(R.id.tabs_section_line);
         sectionLine.setBackgroundColor(color);
@@ -169,12 +188,12 @@ public class TabsFragment extends Fragment
                     .findFragmentByTag(TabsFragment.tagNameWithID(i));
             tabFragment.setBackgroundToDefault();
         }
-        
+
         TabFragment tabFragment = (TabFragment) fragmentManager
                 .findFragmentByTag(TabsFragment.tagNameWithID(position));
         tabFragment.setBackgroundResourceToFocused();
         tabFragment.setBackgroundColorToFocused();
-        
+
         setSectionLineColor(tabFragment.getTab().getColor());
     }
 }

@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity {    
+public class MainActivity extends FragmentActivity {       
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,12 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
     }
 
     private Tab[] getTabs() {
