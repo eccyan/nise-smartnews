@@ -35,7 +35,6 @@ public class TabsFragment extends Fragment
     private int currentPosition;
     private int lastScrollX;
 
-    private HorizontalScrollView tabScrollView;
     private View sectionLineView;
 
     @Override
@@ -58,8 +57,6 @@ public class TabsFragment extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
         
-        tabScrollView = (HorizontalScrollView)view.findViewById(R.id.tab_scroll_view);
-
         sectionLineView = view.findViewById(R.id.tabs_section_line);
 
         return view;
