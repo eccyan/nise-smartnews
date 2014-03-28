@@ -3,7 +3,9 @@ package com.eccyan.bootcamp;
 
 import java.util.Locale;
 
+import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.animation.AnimatorProxy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -56,7 +58,7 @@ public class TabsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
-        
+
         sectionLineView = view.findViewById(R.id.tabs_section_line);
 
         return view;
@@ -176,17 +178,13 @@ public class TabsFragment extends Fragment
             HorizontalScrollView tabScrollView = (HorizontalScrollView) getActivity()
                     .findViewById(R.id.tab_scroll_view);
 
-            int direction = 1;
-            if (currentPosition - position < 0) {
-                direction = -1;
-            }
-            
-            tabScrollView.smoothScrollBy(direction, 0);
-            tabScrollView.smoothScrollTo(newScrollX, 0);
-            
-            ObjectAnimator.ofFloat(targetTab, "scaleY", 1, 40 / 36)
-                    .setDuration(200).start();
+            AnimatorProxy.wrap(targetTab).setPivotY(-targetTab.getHeight() / 2);
 
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(
+                    ObjectAnimator.ofFloat(targetTab, "scaleY", 1, 40 / 36),
+                    ObjectAnimator.ofInt(tabScrollView, "scrollX", newScrollX));
+            animatorSet.setDuration(240).start();
         }
 
     }
