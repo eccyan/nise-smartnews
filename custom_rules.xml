@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    
+    <property name="source.dir" value="bin/buildsrc" />
+    
+    <target name="product">
+        <property name="buildenv" value="product" />
+        <antcall target="dobuild"/>
+    </target>
+    
+    <target name="staging">
+        <property name="buildenv" value="staging" />
+        <antcall target="dobuild"/>
+    </target>
+    
+    <target name="develop">
+        <property name="buildenv" value="develop" />
+        <antcall target="dobuild"/>
+    </target>
+    
+    <target name="-pre-build">
+        <antcall target="clean"/>
+        <property name="buildenv" value="develop" />
+        <copy todir="${source.dir}">
+            <fileset dir="src/"/>
+<!--             <fileset dir="src/${buildenv}"/> -->
+        </copy>
+    </target>
+    
+    <target name="dobuild">
+        <antcall target="release" />
+        <antcall target="postbuild" />
+    </target>
+    
+    <target name="-post-build">
+        <copy file="${out.final.file}" tofile="apk/${app.name}-${buildenv}.apk" overwrite="true" />
+    </target>
+    
+    <target name="postbuild">
+        <antcall target="clean"/>
+        <echo>output: ${app.name}-${buildenv}.apk</echo>
+        <echo>keystore: ${key.store}</echo>
+    </target>
+
+</project>
