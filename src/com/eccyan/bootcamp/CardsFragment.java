@@ -2,6 +2,8 @@ package com.eccyan.bootcamp;
 
 import java.util.Locale;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,11 +38,10 @@ public class CardsFragment extends Fragment {
 	    super.onCreateView(inflater, container, savedInstanceState);
 
         FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_cards, container, false);
+
         TextView textView = (TextView)frameLayout.findViewById(R.id.card_text_view);
-
-        textView.setBackgroundResource(R.drawable.background_card);
         textView.setText(String.format(Locale.JAPAN, "Cards %s", position));
-
+        
         return frameLayout;
 		
 	}

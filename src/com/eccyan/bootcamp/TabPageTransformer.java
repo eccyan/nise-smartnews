@@ -1,9 +1,12 @@
 
 package com.eccyan.bootcamp;
 
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.ViewPager.PageTransformer;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -21,20 +24,40 @@ public class TabPageTransformer implements PageTransformer {
 
     @Override
     public void transformPage(View page, float position) {
-        ScrollView scrollView = (ScrollView) page.findViewById(R.id.card_scroll_view);
-        /*
-         * Paint mShadow = new Paint(); // radius=10, y-offset=2, color=black
-         * mShadow.setShadowLayer(10.0f, 0.0f, 2.0f, 0xFF000000);
-         */
+        FrameLayout frameLayout = (FrameLayout) page.findViewById(R.id.card_frame_layout);
+        View cardPaperView = frameLayout.findViewById(R.id.card_paper_view);
+        View cardShadowView = frameLayout.findViewById(R.id.card_shadow_view);
 
-        int pageWidth = scrollView.getWidth();
+        int pageWidth = frameLayout.getWidth();
+        int pageHeight = frameLayout.getHeight();
+        int cardPaperWidth = cardPaperView.getWidth();
+        int cardPaperHeight = cardPaperView.getHeight();
+        int cardShadowWidth = cardShadowView.getWidth();
+        int cardShadowHeight = cardShadowView.getHeight();
+
+        ViewHelper.setRotation(cardPaperView, 2f);
+        ViewHelper.setRotation(cardShadowView, 2f);
+        
+        ViewHelper.setAlpha(cardPaperView, 1);
+        ViewHelper.setAlpha(cardShadowView, 1);
+        
         if (position < -1) {
+            ViewHelper.setAlpha(cardPaperView, 0);
+            ViewHelper.setAlpha(cardShadowView, 0);
         } else if (position <= 0) {
-            ViewHelper.setTranslationX(scrollView, pageWidth * -position);
+            ViewHelper.setTranslationX(frameLayout, pageWidth * -position);
+            ViewHelper.setTranslationX(cardPaperView, cardPaperWidth * position);
+            ViewHelper.setPivotX(cardPaperView, cardPaperWidth);
+            ViewHelper.setScaleX(cardPaperView, -position);
         } else if (position <= 1) {
-            ViewHelper.setTranslationX(scrollView, pageWidth * -position);
+            ViewHelper.setTranslationX(frameLayout, pageWidth * -position);
+            ViewHelper.setTranslationX(cardShadowView, cardShadowWidth * position);
+            ViewHelper.setAlpha(cardPaperView, 0);
         } else {
+            ViewHelper.setAlpha(cardPaperView, 1);
+            ViewHelper.setAlpha(cardShadowView, 1);
         }
+        
     }
 
 }
