@@ -33,7 +33,7 @@ public class TabFragment extends Fragment
         return tabFragment;
     }
     
-    public static void setBackGroundColorForTextView(TextView textView, int color) {
+    private static void setBackGroundColorForTextView(TextView textView, int color) {
         LayerDrawable layerDrawable = (LayerDrawable) textView.getBackground();
         GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable.getDrawable(1);
         gradientDrawable.setColor(color);
@@ -62,8 +62,18 @@ public class TabFragment extends Fragment
         
         int position = Arrays.asList(categoryNames).indexOf(getArguments().getString(TITLE));
         viewPager.setCurrentItem(position);
-        
-        view.setBackgroundResource(R.drawable.background_tab_shape_focused);
-        setBackGroundColorForTextView((TextView)view, getArguments().getInt(COLOR));
     }
+    
+    public void setBackgroundToDefault() {
+        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
+        tabView.setBackgroundResource(R.drawable.background_tab_shape);
+        setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
+    }
+    
+    public void setBackgroundToFocused() {
+        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
+        tabView.setBackgroundResource(R.drawable.background_tab_shape_focused);
+        setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
+    }
+    
 }

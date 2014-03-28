@@ -1,6 +1,8 @@
 
 package com.eccyan.bootcamp;
 
+import java.util.Locale;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +20,12 @@ import android.widget.LinearLayout;
 public class TabsFragment extends Fragment
         implements OnPageChangeListener {
     final private static String CURRENT_POSITION = "current position";
-    final private static String TAG_TAB = "tab";
+    final private static String TAGNAME_TAB = "tab";
     final private static int SCROLL_OFFSET = 52;
+
+    public static String tagNameWithID(int id) {
+        return String.format(Locale.JAPAN, "%d_%s", id, TAGNAME_TAB);
+    }
 
     public TabsFragment() {
     }
@@ -63,7 +69,7 @@ public class TabsFragment extends Fragment
         removeAllTabs();
         TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
-            addTab(adapter.getTab(i));
+            addTab(i, adapter.getTab(i));
         }
 
         viewPager.getAdapter().notifyDataSetChanged();
@@ -71,12 +77,12 @@ public class TabsFragment extends Fragment
         this.viewPager = viewPager;
     }
 
-    public void addTab(Tab tab) {
+    public void addTab(int position, Tab tab) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_tab_container,
-                TabFragment.newInstance(tab.getTitle(), tab.getColor()), TAG_TAB);
+                TabFragment.newInstance(tab.getTitle(), tab.getColor()), tagNameWithID(position));
 
         fragmentTransaction.commit();
     }
@@ -145,5 +151,16 @@ public class TabsFragment extends Fragment
 
     @Override
     public void onPageSelected(int position) {
+        TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            TabFragment tabFragment = (TabFragment) fragmentManager
+                    .findFragmentByTag(TabsFragment.tagNameWithID(i));
+            tabFragment.setBackgroundToDefault();
+        }
+        
+        TabFragment tabFragment = (TabFragment) fragmentManager
+                .findFragmentByTag(TabsFragment.tagNameWithID(position));
+        tabFragment.setBackgroundToFocused();
     }
 }
