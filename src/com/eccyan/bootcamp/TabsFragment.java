@@ -7,6 +7,10 @@ import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.animation.AnimatorProxy;
 
+import android.R.integer;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -95,13 +99,19 @@ public class TabsFragment extends Fragment
             addTab(i, adapter.getTabAt(i));
         }
 
-        sectionLineView.setBackgroundColor(adapter.getTabAt(currentPosition).getColor());
+        setSectionLineColor(adapter.getTabAt(currentPosition).getColor());
 
         this.viewPager = viewPager;
 
         removeAllTabs();
         this.viewPager.getAdapter().notifyDataSetChanged();
 
+    }
+    
+    public void setSectionLineColor(int color) {
+        LayerDrawable layerDrawable = (LayerDrawable) sectionLineView.getBackground();
+        GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable.getDrawable(0);
+        gradientDrawable.setColor(color);     
     }
 
     public void addTab(int position, Tab tab) {
@@ -221,6 +231,7 @@ public class TabsFragment extends Fragment
         tabFragment.setBackgroundResourceToFocused();
         tabFragment.setBackgroundColorToFocused();
 
-        sectionLineView.setBackgroundColor(tabFragment.getTab().getColor());
+        
+        setSectionLineColor(tabFragment.getTab().getColor());  
     }
 }
