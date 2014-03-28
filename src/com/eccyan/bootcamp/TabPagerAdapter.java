@@ -28,7 +28,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SuperAwesomeCardFragment.newInstance(position);
+        return CardsFragment.newInstance(position);
     }
     
     @Override

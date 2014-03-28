@@ -20,16 +20,21 @@ import android.widget.TextView;
 
 public class TabFragment extends Fragment
         implements OnTouchListener {
+    public static final String POSITION = "position";
     public static final String TITLE = "title";
     public static final String COLOR = "color";
+    
+    private int position;
+    private Tab tab;
 
     public TabFragment() {
     }
 
-    public static TabFragment newInstance(String title, int color) {
+    public static TabFragment newInstance(int position, String title, int color) {
         TabFragment tabFragment = new TabFragment();
 
         Bundle bundle = new Bundle();
+        bundle.putInt(POSITION, position);
         bundle.putString(TITLE, title);
         bundle.putInt(COLOR, color);
         tabFragment.setArguments(bundle);
@@ -51,6 +56,22 @@ public class TabFragment extends Fragment
         
         return Color.argb(alpha, (red + 0x1f) / 2, (green + 0x1f) / 2, (blue + 0x1f) / 2);
     }
+    
+    public Tab getTab() {
+        return tab;
+    }
+    
+    public int getPosition() {
+        return position;
+    }
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        position = getArguments().getInt(POSITION);
+        tab = new Tab(getArguments().getString(TITLE), getArguments().getInt(COLOR));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,10 +79,8 @@ public class TabFragment extends Fragment
 
         TextView textView = (TextView) inflater.inflate(R.layout.fragment_tab, container, false);
 
-        Bundle arguments = getArguments();
-        textView.setText(arguments.getString(TITLE));
-
-        setBackGroundColorForTextView(textView, arguments.getInt(COLOR));
+        textView.setText(tab.getTitle());
+        setBackGroundColorForTextView(textView, tab.getColor());
 
         textView.setOnTouchListener(this);
 
@@ -78,18 +97,22 @@ public class TabFragment extends Fragment
         setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
     }
     
-    public void setBackgroundToFocused() {
+    public void setBackgroundResourceToFocused() {
         TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         tabView.setBackgroundResource(R.drawable.background_tab_shape_focused);
+    }
+    
+    public void setBackgroundColorToFocused() {
+        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
     }
     
-    public void setBackgroundToPressed() {
+    public void setBackgroundColorToPressed() {
         TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         setBackGroundColorForTextView(tabView, getPressedColor(getArguments().getInt(COLOR)));
     }
     
-    public void setBackgroundToNotPressed() {
+    public void setBackgroundColorToNotPressed() {
         TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
     }
@@ -104,10 +127,10 @@ public class TabFragment extends Fragment
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        setBackgroundToNotPressed();
+        setBackgroundColorToNotPressed();
         
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            setBackgroundToPressed();
+            setBackgroundColorToPressed();
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             setViewPagerItemToTabPosition();

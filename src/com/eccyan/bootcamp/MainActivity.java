@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends FragmentActivity {  
+public class MainActivity extends FragmentActivity {    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +23,7 @@ public class MainActivity extends FragmentActivity {
         TabPagerAdapter adapter = new TabPagerAdapter(fragmentManager, getTabs());
 
         pager.setAdapter(adapter);
-
+        
         tabs.setViewPager(pager);
     };
 

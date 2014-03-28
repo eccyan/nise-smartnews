@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tab_scroll_view"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none" >
+    android:layout_height="match_parent" >
 
-    <!-- Fragment 用ダミーコンテナ -->
-    <LinearLayout
-        android:id="@+id/fragment_tab_container"
+    <HorizontalScrollView
+        android:id="@+id/tab_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:fillViewport="true"
+        android:scrollbars="none" >
+
+        <!-- Fragment 用ダミーコンテナ -->
+
+        <LinearLayout
+            android:id="@+id/fragment_tab_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+        android:id="@+id/tabs_section_line"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal" >
-    </LinearLayout>
+        android:layout_height="6dip"
+        android:layout_below="@+id/tab_scroll_view"
+        android:background="@android:color/black" />
 
-</HorizontalScrollView>
+</RelativeLayout>

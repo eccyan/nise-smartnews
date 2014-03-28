@@ -3,6 +3,7 @@ package com.eccyan.bootcamp;
 
 import java.util.Locale;
 
+import android.R.integer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +39,7 @@ public class TabsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_tabs, container, false);
+        
         return view;
     }
 
@@ -65,6 +67,8 @@ public class TabsFragment extends Fragment
         }
 
         viewPager.setOnPageChangeListener(this);
+        viewPager.setPageTransformer(true, new TabPageTransformer());
+
 
         removeAllTabs();
         TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
@@ -75,6 +79,8 @@ public class TabsFragment extends Fragment
         viewPager.getAdapter().notifyDataSetChanged();
 
         this.viewPager = viewPager;
+        
+        setSectionLineColor(adapter.getTab(currentPosition).getColor());
     }
 
     public void addTab(int position, Tab tab) {
@@ -82,7 +88,7 @@ public class TabsFragment extends Fragment
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_tab_container,
-                TabFragment.newInstance(tab.getTitle(), tab.getColor()), tagNameWithID(position));
+                TabFragment.newInstance(position, tab.getTitle(), tab.getColor()), tagNameWithID(position));
 
         fragmentTransaction.commit();
     }
@@ -106,6 +112,11 @@ public class TabsFragment extends Fragment
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SCROLL_OFFSET,
                 displayMetrics);
+    }
+    
+    private void setSectionLineColor(int color) {
+        View sectionLine = getView().findViewById(R.id.tabs_section_line);
+        sectionLine.setBackgroundColor(color);
     }
 
     private void scrollTo(int position, int offset) {
@@ -161,6 +172,9 @@ public class TabsFragment extends Fragment
         
         TabFragment tabFragment = (TabFragment) fragmentManager
                 .findFragmentByTag(TabsFragment.tagNameWithID(position));
-        tabFragment.setBackgroundToFocused();
+        tabFragment.setBackgroundResourceToFocused();
+        tabFragment.setBackgroundColorToFocused();
+        
+        setSectionLineColor(tabFragment.getTab().getColor());
     }
 }
