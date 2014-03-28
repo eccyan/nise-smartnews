@@ -1,8 +1,6 @@
 
 package com.eccyan.bootcamp;
 
-import java.util.Arrays;
-
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -26,6 +24,7 @@ public class TabFragment extends Fragment
     
     private int position;
     private Tab tab;
+    private TextView tabView;
 
     public TabFragment() {
     }
@@ -71,57 +70,51 @@ public class TabFragment extends Fragment
         
         position = getArguments().getInt(POSITION);
         tab = new Tab(getArguments().getString(TITLE), getArguments().getInt(COLOR));
+        tabView = null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        TextView textView = (TextView) inflater.inflate(R.layout.fragment_tab, container, false);
+        tabView = (TextView) inflater.inflate(R.layout.fragment_tab, container, false);
 
-        textView.setText(tab.getTitle());
-        setBackGroundColorForTextView(textView, tab.getColor());
+        tabView.setText(tab.getTitle());
+        setBackGroundColorForTextView(tabView, tab.getColor());
 
-        textView.setOnTouchListener(this);
+        tabView.setOnTouchListener(this);
 
-        return textView;
+        return tabView;
     }
     
     public void setBackgroundToDefault() {
-        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         tabView.setBackgroundResource(R.drawable.background_tab_shape);
         
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         
         tabView.setPadding(0, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, displayMetrics), 0, 0);
-        setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
+        setBackGroundColorForTextView(tabView, tab.getColor());
     }
     
     public void setBackgroundResourceToFocused() {
-        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
         tabView.setBackgroundResource(R.drawable.background_tab_shape_focused);
     }
     
     public void setBackgroundColorToFocused() {
-        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
-        setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
+        setBackGroundColorForTextView(tabView, tab.getColor());
     }
     
     public void setBackgroundColorToPressed() {
-        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
-        setBackGroundColorForTextView(tabView, getPressedColor(getArguments().getInt(COLOR)));
+        setBackGroundColorForTextView(tabView, getPressedColor(tab.getColor()));
     }
     
     public void setBackgroundColorToNotPressed() {
-        TextView tabView = (TextView)getView().findViewById(R.id.tab_text_view);
-        setBackGroundColorForTextView(tabView, getArguments().getInt(COLOR));
+        setBackGroundColorForTextView(tabView, tab.getColor());
     }
     
     public void setViewPagerItemToTabPosition() {
         ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.pager);
-        String[] categoryNames = getResources().getStringArray(R.array.category_names);
         
-        int position = Arrays.asList(categoryNames).indexOf(getArguments().getString(TITLE));
         viewPager.setCurrentItem(position);
     }
 

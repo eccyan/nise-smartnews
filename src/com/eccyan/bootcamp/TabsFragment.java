@@ -33,21 +33,32 @@ public class TabsFragment extends Fragment
     private ViewPager viewPager;
     private int currentPosition;
     private int lastScrollX;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_tabs, container, false);
-
-        return view;
-    }
-
+    
+    private View sectionLineView;
+    
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             currentPosition = savedInstanceState.getInt(CURRENT_POSITION, 0);
         }
+    }
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        sectionLineView = null;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_tabs, container, false);
+        
+        sectionLineView = view.findViewById(R.id.tabs_section_line);
+
+        return view;
     }
 
     @Override
@@ -73,7 +84,7 @@ public class TabsFragment extends Fragment
             addTab(i, adapter.getTabAt(i));
         }
 
-        setSectionLineColor(adapter.getTabAt(currentPosition).getColor());
+        sectionLineView.setBackgroundColor(adapter.getTabAt(currentPosition).getColor());
 
         this.viewPager = viewPager;
 
@@ -133,11 +144,6 @@ public class TabsFragment extends Fragment
                 displayMetrics);
     }
 
-    private void setSectionLineColor(int color) {
-        View sectionLine = getView().findViewById(R.id.tabs_section_line);
-        sectionLine.setBackgroundColor(color);
-    }
-
     private void scrollTo(int position, int offset) {
         TabPagerAdapter adapter = (TabPagerAdapter) viewPager.getAdapter();
 
@@ -194,6 +200,6 @@ public class TabsFragment extends Fragment
         tabFragment.setBackgroundResourceToFocused();
         tabFragment.setBackgroundColorToFocused();
 
-        setSectionLineColor(tabFragment.getTab().getColor());
+        sectionLineView.setBackgroundColor(tabFragment.getTab().getColor());
     }
 }
